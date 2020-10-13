@@ -1,5 +1,6 @@
 import requests
 import os
+import sys
 
 from physics import calculate
 
@@ -61,8 +62,9 @@ class User:
         
         try:
             answer = str(calculate(self.unknown_variable, self.missing_variable, self.variables))
-            self.reply(replyToken, 'Answer: ' + answer)
-        except:
+            self.reply(replyToken, 'คำตอบของท่านคือ ' + self.unknown_variable + ' = ' + answer)
+        except Exception as e:
+            print(e)
             self.reply(replyToken, 'Something went wrong!')
         self.reset()
 
