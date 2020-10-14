@@ -1,1 +1,1 @@
-server: flask run
+server: gunicorn server:app
