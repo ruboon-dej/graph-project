@@ -21,6 +21,10 @@ def extract_text_from_event(event):
     else:
         return ''
 
+@app.route('/ping', methods=['GET'])
+def ping():
+    return 'pong'
+
 @app.route('/message', methods=['POST'])
 def message():
     body = request.get_json()
@@ -36,3 +40,7 @@ def message():
         user = users[userId]
         user.converse(replyToken, text)
     return 'success'
+
+if __name__ == '__main__':
+    # Threaded option to enable multiple instances for multiple user access support
+    app.run(threaded=True, port=5000)
