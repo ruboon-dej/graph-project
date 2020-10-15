@@ -61,7 +61,7 @@ class User:
                 return
         
         try:
-            answer = str(calculate(self.unknown_variable, self.missing_variable, self.variables))
+            answer = calculate(self.unknown_variable, self.missing_variable, self.variables)
             self.reply(replyToken, 'คำตอบของท่านคือ ' + self.unknown_variable + ' = ' + answer)
         except Exception as e:
             print(e)
