@@ -131,7 +131,7 @@ def get_v_missing_t(variables):
     v = math.sqrt(u**2 + 2 * a * s)
     return str(v) + ',' + str(-v)
 
-def get_v_missing_t(variables):
+def get_u_missing_t(variables):
     s = variables['s']
     a = variables['a']
     v = variables['v']
