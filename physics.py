@@ -82,7 +82,7 @@ def get_t_missing_u(variables):
     v = variables['v']
     same = math.sqrt(v**2 - 2 * a *s)
     t1 = (v - same)/a
-    t2 = (v + same)/
+    t2 = (v + same)/a
     return str(t1) + ',' + str(t2)
 
 def get_a_missing_u(variables):
