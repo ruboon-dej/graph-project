@@ -48,8 +48,9 @@ def get_t_missing_v(variables):
     s = variables['s']
     u = variables['u']
     a = variables['a']
-    t1 = math.sqrt((sa + u**2) / a**2 ) - u * a / 4
-    t2 = - 1 * math.sqrt((s * a + u**2) / a**2 ) - (u * a / 4)
+    common = math.sqrt((2*s*a + u**2) / a**2 )
+    t1 = common - u * a / 4
+    t2 = -1 * common - u * a / 4
     return str(t1) + ', ' + str(t2)
 
 def get_a_missing_v(variables):
