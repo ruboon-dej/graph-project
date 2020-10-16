@@ -64,7 +64,7 @@ class User:
             value, answer = calculate(self.unknown_variable, self.missing_variable, self.variables)
             self.variables[self.missing_variable] = value
             reply = 'คำตอบของท่านคือ ' + self.unknown_variable + ' = ' + answer + '\n'
-            link = 'https://fequalsma.herokuapp.com/graph?a={a}&u={u}&t={t}'.format(...self.variables)
+            link = 'https://fequalsma.herokuapp.com/graph?a={a}&u={u}&t={t}'.format(**self.variables)
             reply += link
             self.reply(replyToken, reply)
         except Exception as e:
