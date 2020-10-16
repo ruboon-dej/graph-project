@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_caching import Cache
 import os
 
@@ -55,7 +55,15 @@ def extract_text_from_event(event):
     else:
         return ''
 
-@app.route('/ping', methods=['GET'])
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/graph')
+def graph():
+    return render_template('graph.html')
+
+@app.route('/ping')
 def ping():
     return 'pong'
 

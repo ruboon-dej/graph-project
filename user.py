@@ -6,7 +6,7 @@ from physics import calculate
 
 
 LINE_URL = 'https://api.line.me/v2/bot/message/reply'
-token = os.environ['LINE_TOKEN']
+token = os.environ.get('LINE_TOKEN')
 
 VALID_VARIABLES = ['v', 'u', 'a', 't', 's']
 
@@ -61,8 +61,12 @@ class User:
                 return
         
         try:
-            answer = calculate(self.unknown_variable, self.missing_variable, self.variables)
-            self.reply(replyToken, 'คำตอบของท่านคือ ' + self.unknown_variable + ' = ' + answer)
+            value, answer = calculate(self.unknown_variable, self.missing_variable, self.variables)
+            self.variables[self.missing_variable] = value
+            reply = 'คำตอบของท่านคือ ' + self.unknown_variable + ' = ' + answer + '\n'
+            link = 'https://fequalsma.herokuapp.com/graph?a={a}&u={u}&t={t}'.format(...self.variables)
+            reply += link
+            self.reply(replyToken, reply)
         except Exception as e:
             print(e)
             self.reply(replyToken, 'Something went wrong!')

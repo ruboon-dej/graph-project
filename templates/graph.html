@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div style="width:75%">
+        <canvas id="myChart" style="display: block; height: 230px; width: 461px;" width="922" height="460"></canvas>
+        <script>
+            const ctx = document.getElementById('myChart');
+            const data = [];
+            const urlParams = new URLSearchParams(window.location.search);
+            const u = urlParams.get('u');
+            const a = urlParams.get('a');
+            const finalT = urlParams.get('t');
+            for (let t = 0; t <= finalT; t++) {
+                const s = u * t + 0.5 * a * t * t;
+                data.push({ x: t, y: s });
+            }
+
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(item => item.x),
+                    datasets: [{
+                        label: 'data',
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        data
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Distance vs Time'
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Distance'
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
