@@ -1,58 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Graph</title>
+    <title>แบบจำลองการเคลื่อนที่</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
 </head>
 <body>
     <div style="width:75%">
-        <canvas id="myChart" style="display: block; height: 230px; width: 461px;" width="922" height="460"></canvas>
+        <canvas id="speedChart" style="display: block; height: 230px; width: 461px;" width="922" height="460"></canvas>
+        <canvas id="velocityChart" style="display: block; height: 230px; width: 461px;" width="922" height="460"></canvas>
+        <canvas id="accelerationChart" style="display: block; height: 230px; width: 461px;" width="922" height="460"></canvas>
         <script>
-            const ctx = document.getElementById('myChart');
-            const data = [];
+            const speedCtx = document.getElementById('speedChart');
+            const velocityCtx = document.getElementById('velocityChart');
+            const accelerationCtx = document.getElementById('accelerationChart');
+            const speedData = [];
+            const velocityData = [];
+            const accelerationData = [];
             const urlParams = new URLSearchParams(window.location.search);
-            const u = urlParams.get('u');
-            const a = urlParams.get('a');
-            const finalT = urlParams.get('t');
+            const u = parseFloat(urlParams.get('u'));
+            const a = parseFloat(urlParams.get('a'));
+            const finalT = parseFloat(urlParams.get('t'));
             for (let t = 0; t <= finalT; t++) {
                 const s = u * t + 0.5 * a * t * t;
-                data.push({ x: t, y: s });
+                const v = u + a * t;
+                speedData.push({ x: t, y: s });
+                velocityData.push({ x: t, y: v });
+                accelerationData.push({ x: t, y: a });
             }
 
-            const myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.map(item => item.x),
-                    datasets: [{
-                        label: 'data',
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                        data
-                    }]
-                },
-                options: {
-                    title: {
-                        display: true,
-                        text: 'Distance vs Time'
-                    },
-                    scales: {
-                        xAxes: [{
-                            display: true,
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Time'
-                            }
-                        }],
-                        yAxes: [{
-                            display: true,
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Distance'
-                            }
+            const buildGraph = (ctx, data, label, r, g, b) => {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.map(item => item.x),
+                        datasets: [{
+                            label,
+                            borderColor: `rgb(${r}, ${g}, ${b})`,
+                            backgroundColor: `rgba(${r}, ${g}, ${b}, 0.5)`,
+                            data
                         }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: `${label} vs เวลา`
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'เวลา'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: label
+                                }
+                            }]
+                        }
                     }
-                }
-            });
+                });
+            }
+            buildGraph(speedCtx, speedData, 'ระยะทาง', 255, 99, 132);
+            buildGraph(velocityCtx, velocityData, 'ความเร็ว', 75, 192, 192);
+            buildGraph(accelerationCtx, accelerationData, 'ความเร่ง', 255, 205, 86);
         </script>
     </div>
 </body>

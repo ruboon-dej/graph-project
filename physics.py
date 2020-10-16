@@ -5,28 +5,31 @@ def get_v_missing_s(variables):
     a = variables['a']
     t = variables['t']
     v = u + a * t
-    return v, str(v)
+    return str(v)
 
 def get_a_missing_s(variables):
     u = variables['u']
     v = variables['v']
     t = variables['t']
     a = (v-u)/t
-    return a, str(a)
+    variables['a'] = a
+    return str(a)
 
 def get_t_missing_s(variables):
     u = variables['u']
     v = variables['v']
     a = variables['a']
     t = (v-u)/a
-    return t, str(t)
+    variables['t'] = t
+    return str(t)
 
 def get_u_missing_s(variables):
     v = variables['v']
     a = variables['a']
     t = variables['t']
     u = v - a * t
-    return u, str(u)
+    variables['u'] = u
+    return str(u)
 
 # the second equation
 
@@ -35,14 +38,15 @@ def get_s_missing_v(variables):
     t = variables['t']
     a = variables['a']
     s = u * t + 0.5 * a * t**2
-    return s, str(s)
+    return str(s)
 
 def get_u_missing_v(variables):
     s = variables['s']
     t = variables['t']
     a = variables['a']
     u = s/t - 0.5 * a * t
-    return u, str(u)
+    variables['u'] = u
+    return str(u)
 
 def get_t_missing_v(variables):
     s = variables['s']
@@ -51,14 +55,16 @@ def get_t_missing_v(variables):
     common = math.sqrt((2*s*a + u**2) / a**2 )
     t1 = common - u * a / 4
     t2 = -1 * common - u * a / 4
-    return t1, str(t1) + ', ' + str(t2)
+    variables['t'] = t1
+    return str(t1) + ', ' + str(t2)
 
 def get_a_missing_v(variables):
     s = variables['s']
     u = variables['u']
     t = variables['t']
     a = (2 * s - t * u) / t**2
-    return a, str(a)
+    variables['a'] = a
+    return str(a)
      
 # third equation
 
@@ -67,14 +73,16 @@ def get_s_missing_u(variables):
     t = variables['t']
     a = variables['a']
     s = v * t - 0.5 * a * t**2
-    return s, str(s)
+    get_u_missing_s(variables)
+    return str(s)
 
 def get_v_missing_u(variables):
     s = variables['s']
     t = variables['t']
     a = variables['a']
     v = (s + 0.5 * a * t**2)/t
-    return v, str(v)
+    get_u_missing_v(variables)
+    return str(v)
 
 def get_t_missing_u(variables):
     s = variables['s']
@@ -83,14 +91,20 @@ def get_t_missing_u(variables):
     same = math.sqrt(v**2 - 2 * a *s)
     t1 = (v - same)/a
     t2 = (v + same)/a
-    return t2, str(t1) + ',' + str(t2)
+    variables['t'] = t2
+    if 'u' not in variables:
+        get_u_missing_t(variables)
+    return str(t1) + ',' + str(t2)
 
 def get_a_missing_u(variables):
     s = variables['s']
     v = variables['v']
     t = variables['t']
     a = (2 * v * t - 2 * s)/t**2
-    return a, str(a)
+    variables['a'] = a
+    if 'u' not in variables:
+        get_u_missing_a(variables)
+    return str(a)
 
 # fourth equation
 
@@ -99,28 +113,36 @@ def get_s_missing_a(variables):
     v = variables['v']
     t = variables['t']
     s = 0.5 * (u + v) * t
-    return s, str(s)
+    get_a_missing_s(variables)
+    return str(s)
 
 def get_u_missing_a(variables):
     s = variables['s']
     v = variables['v']
     t = variables['t']
     u = ( 2 * s / t ) - v
-    return u, str(u)
+    variables['u'] = u
+    if 'a' not in variables:
+        get_a_missing_u(variables)
+    return str(u)
 
 def get_v_missing_a(variables):
     s = variables['s']
     u = variables['u']
     t = variables['t']
     v = ( 2 * s / t ) - u
-    return v, str(v)
+    get_a_missing_v(variables)
+    return str(v)
 
 def get_t_missing_a(variables):
     s = variables['s']
     v = variables['v']
     u = variables['u']
     t = (2 * s)/(u+v)
-    return t, str(t)
+    variables['t'] = t
+    if 'a' not in variables:
+        get_a_missing_t(variables)
+    return str(t)
 
 # last equation
 
@@ -129,28 +151,36 @@ def get_v_missing_t(variables):
     a = variables['a']
     u = variables['u']
     v = math.sqrt(u**2 + 2 * a * s)
-    return v, str(v) + ',' + str(-v)
+    get_t_missing_v(variables)
+    return str(v) + ',' + str(-v)
 
 def get_u_missing_t(variables):
     s = variables['s']
     a = variables['a']
     v = variables['v']
     u = math.sqrt(v**2 - 2 * a * s)
-    return u, str(u) + ',' + str(-u)
+    variables['u'] = u
+    if 't' not in variables:
+        get_t_missing_u(variables)
+    return str(u) + ',' + str(-u)
 
 def get_a_missing_t(variables):
     s = variables['s']
     v = variables['v']
     u = variables['u']
     a = (v**2 - u**2) / 2 * s
-    return a, str(a)
+    variables['a'] = a
+    if 't' not in variables:
+        get_t_missing_a(variables)
+    return str(a)
 
 def get_s_missing_t(variables):
     v = variables['v']
     a = variables['a']
     u = variables['u']
     s = (v**2 - u**2) / 2 * a
-    return s, str(s)
+    get_t_missing_s(variables)
+    return str(s)
 
 def calculate(unknown_variable, missing_variable, variables):
     if unknown_variable == 'v' and missing_variable == 's':
@@ -198,4 +228,4 @@ def calculate(unknown_variable, missing_variable, variables):
     elif unknown_variable == 's' and missing_variable == 't':
         return get_s_missing_t(variables)
     else:
-        return 0, '0'
+        return 0
